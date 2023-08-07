@@ -1,0 +1,20 @@
+{
+	"name": "Binary_ADLS_Table001",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "link_adls2verification4shir",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "*",
+				"folderPath": "Addin/Table001",
+				"fileSystem": "test3"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

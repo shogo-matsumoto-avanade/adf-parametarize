@@ -1,0 +1,17 @@
+{
+	"name": "link_vm4shir_test",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "\\\\vm4shir-test\\Shared",
+			"userId": "shogo.matsumoto",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI5OThiZmNmZS0zNjhlLTQ1ODQtYjhhZC04NWI3ZmFhMGQzZDQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SHIR-vm4shir-test",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

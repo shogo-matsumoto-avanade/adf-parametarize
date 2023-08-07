@@ -1,0 +1,6 @@
+{
+	"name": "SHIR-vm4shir-test",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

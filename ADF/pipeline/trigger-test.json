@@ -1,0 +1,42 @@
+{
+	"name": "trigger-test",
+	"properties": {
+		"activities": [
+			{
+				"name": "If Time Condition",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@and( \n    and(\n        greaterOrEquals(9, int(startOfHour(pipeline().TriggerTime))), \n        greater(9, int(startOfHour(addMinutes(pipeline().TriggerTime, 53))))),\n    and(\n        lessOrEquals(21, int(startOfHour(pipeline().TriggerTime))), \n        lessOrEquals(21, int(startOfHour(addMinutes(pipeline().TriggerTime, 53)))))\n    )\n)",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Append variable1",
+							"type": "AppendVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "x",
+								"value": "test"
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"x": {
+				"type": "Array"
+			},
+			"y": {
+				"type": "Array"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-07-18T08:38:02Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

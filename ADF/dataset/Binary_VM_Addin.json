@@ -1,0 +1,21 @@
+{
+	"name": "Binary_VM_Addin",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "link_vm_shir_02",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"VM1": "vm-shir-01-mk2"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"folderPath": "Addin"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

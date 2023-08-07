@@ -1,0 +1,11 @@
+{
+	"name": "link_adls2verification4shir",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://adls2verification4shir.dfs.core.windows.net/"
+		}
+	}
+}

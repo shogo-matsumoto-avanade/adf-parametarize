@@ -1,0 +1,9 @@
+{
+	"name": "adf4shir",
+	"location": "japaneast",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "05148eb4-4939-44e4-8adb-d3ae763c4e46",
+		"tenantId": "cf36141c-ddd7-45a7-b073-111f66d0b30c"
+	}
+}
