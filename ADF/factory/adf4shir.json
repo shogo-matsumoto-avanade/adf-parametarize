@@ -1,5 +1,13 @@
 {
 	"name": "adf4shir",
+	"properties": {
+		"globalParameters": {
+			"Target1": {
+				"type": "string",
+				"value": "vm-shir-01-mk2"
+			}
+		}
+	},
 	"location": "japaneast",
 	"identity": {
 		"type": "SystemAssigned",
