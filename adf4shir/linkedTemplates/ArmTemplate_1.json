@@ -21,6 +21,30 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/csv_localvm')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "link_vm4shir_test",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/localfile_001')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -275,7 +299,9 @@
 				"annotations": [],
 				"lastPublishTime": "2023-06-30T05:19:30Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/csv_localvm')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/FileTrigger')]",
