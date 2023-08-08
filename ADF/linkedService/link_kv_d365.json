@@ -1,0 +1,10 @@
+{
+	"name": "link_kv_d365",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://erp-kv-cnn-jpe-d365-test.vault.azure.net/"
+		}
+	}
+}
