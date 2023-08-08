@@ -23,6 +23,10 @@
 			"type": "string",
 			"defaultValue": "https://adls2verification4shir.dfs.core.windows.net/"
 		},
+		"link_kv_d365_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://erp-kv-cnn-jpe-d365-test.vault.azure.net/"
+		},
 		"link_vm4shir_test_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\vm4shir-test\\Shared"
@@ -166,6 +170,19 @@
 			"properties": {
 				"type": "SelfHosted",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/link_kv_d365')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('link_kv_d365_properties_typeProperties_baseUrl')]"
+				}
 			},
 			"dependsOn": []
 		},
@@ -1297,28 +1314,6 @@
 				"[concat(variables('factoryId'), '/datasets/container_test2')]",
 				"[concat(variables('factoryId'), '/datasets/csv_test002')]",
 				"[concat(variables('factoryId'), '/datasets/csv_test003')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Binary_VM_Addin')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "link_vm_shir_02_test",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "FileServerLocation",
-						"folderPath": "Addin"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/link_vm_shir_02_test')]"
 			]
 		}
 	]

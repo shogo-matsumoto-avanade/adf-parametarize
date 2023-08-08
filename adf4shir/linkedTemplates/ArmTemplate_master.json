@@ -71,6 +71,10 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/2791ee52-b40d-45d0-8cff-2fa2b85915e5/resourceGroups/SHIR_verification/providers/Microsoft.Storage/storageAccounts/adls2verification4shir"
 		},
+		"link_kv_d365_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://erp-kv-cnn-jpe-d365-test.vault.azure.net/"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "リンクされた ARM テンプレートを含むストレージ アカウントの URI"
@@ -109,6 +113,9 @@
 					},
 					"link_adls2verification4shir_properties_typeProperties_url": {
 						"value": "[parameters('link_adls2verification4shir_properties_typeProperties_url')]"
+					},
+					"link_kv_d365_properties_typeProperties_baseUrl": {
+						"value": "[parameters('link_kv_d365_properties_typeProperties_baseUrl')]"
 					},
 					"link_vm4shir_test_properties_typeProperties_host": {
 						"value": "[parameters('link_vm4shir_test_properties_typeProperties_host')]"

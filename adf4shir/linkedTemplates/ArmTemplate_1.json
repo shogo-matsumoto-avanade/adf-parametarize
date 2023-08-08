@@ -21,6 +21,26 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Binary_VM_Addin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "link_vm_shir_02_test",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"folderPath": "Addin"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/csv_localvm')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -145,7 +165,9 @@
 				"annotations": [],
 				"lastPublishTime": "2023-08-07T06:42:19Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Binary_VM_Addin')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/inbound-test')]",
