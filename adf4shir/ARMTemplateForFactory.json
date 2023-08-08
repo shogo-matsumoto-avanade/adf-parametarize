@@ -31,6 +31,14 @@
 			"type": "string",
 			"defaultValue": "shogo.matsumoto"
 		},
+		"link_vm4shir_test_ShirName": {
+			"type": "string",
+			"defaultValue": "SHIR-vm4shir-test"
+		},
+		"link_vm_shir_02_properties_parameters_VM1_Default": {
+			"type": "string",
+			"defaultValue": "vm-shir-01-mk2"
+		},
 		"link_vm_shir_02_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\@{linkedService().VM1}\\Shared\\ADF"
@@ -39,6 +47,10 @@
 			"type": "string",
 			"defaultValue": "shogo.matsumoto"
 		},
+		"link_vm_shir_02_ShirName": {
+			"type": "string",
+			"defaultValue": "SHIR-01"
+		},
 		"link_vm_shir_02_test_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\vm-shir-01-mk2\\Shared\\ADF"
@@ -46,6 +58,10 @@
 		"link_vm_shir_02_test_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "shogo.matsumoto"
+		},
+		"link_vm_shir_02_test_ShirName": {
+			"type": "string",
+			"defaultValue": "SHIR-01"
 		},
 		"FileTrigger_properties_typeProperties_scope": {
 			"type": "string",
@@ -1472,12 +1488,12 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "SHIR-vm4shir-test",
+					"referenceName": "[parameters('link_vm4shir_test_ShirName')]",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/SHIR-vm4shir-test')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/', parameters('link_vm4shir_test_ShirName'))]"
 			]
 		},
 		{
@@ -1488,7 +1504,7 @@
 				"parameters": {
 					"VM1": {
 						"type": "String",
-						"defaultValue": "vm-shir-01-mk2"
+						"defaultValue": "[parameters('link_vm_shir_02_properties_parameters_VM1_Default')]"
 					}
 				},
 				"annotations": [],
@@ -1502,12 +1518,12 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "SHIR-01",
+					"referenceName": "[parameters('link_vm_shir_02_ShirName')]",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/SHIR-01')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/', parameters('link_vm_shir_02_ShirName'))]"
 			]
 		},
 		{
@@ -1526,12 +1542,12 @@
 					}
 				},
 				"connectVia": {
-					"referenceName": "SHIR-01",
+					"referenceName": "[parameters('link_vm_shir_02_test_ShirName')]",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/SHIR-01')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/', parameters('link_vm_shir_02_test_ShirName'))]"
 			]
 		},
 		{

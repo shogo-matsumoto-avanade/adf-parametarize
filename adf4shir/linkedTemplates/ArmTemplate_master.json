@@ -31,6 +31,14 @@
 			"type": "string",
 			"defaultValue": "shogo.matsumoto"
 		},
+		"link_vm4shir_test_ShirName": {
+			"type": "string",
+			"defaultValue": "SHIR-vm4shir-test"
+		},
+		"link_vm_shir_02_properties_parameters_VM1_Default": {
+			"type": "string",
+			"defaultValue": "vm-shir-01-mk2"
+		},
 		"link_vm_shir_02_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\@{linkedService().VM1}\\Shared\\ADF"
@@ -39,6 +47,10 @@
 			"type": "string",
 			"defaultValue": "shogo.matsumoto"
 		},
+		"link_vm_shir_02_ShirName": {
+			"type": "string",
+			"defaultValue": "SHIR-01"
+		},
 		"link_vm_shir_02_test_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\vm-shir-01-mk2\\Shared\\ADF"
@@ -46,6 +58,10 @@
 		"link_vm_shir_02_test_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "shogo.matsumoto"
+		},
+		"link_vm_shir_02_test_ShirName": {
+			"type": "string",
+			"defaultValue": "SHIR-01"
 		},
 		"FileTrigger_properties_typeProperties_scope": {
 			"type": "string",
@@ -100,17 +116,29 @@
 					"link_vm4shir_test_properties_typeProperties_userId": {
 						"value": "[parameters('link_vm4shir_test_properties_typeProperties_userId')]"
 					},
+					"link_vm4shir_test_ShirName": {
+						"value": "[parameters('link_vm4shir_test_ShirName')]"
+					},
+					"link_vm_shir_02_properties_parameters_VM1_Default": {
+						"value": "[parameters('link_vm_shir_02_properties_parameters_VM1_Default')]"
+					},
 					"link_vm_shir_02_properties_typeProperties_host": {
 						"value": "[parameters('link_vm_shir_02_properties_typeProperties_host')]"
 					},
 					"link_vm_shir_02_properties_typeProperties_userId": {
 						"value": "[parameters('link_vm_shir_02_properties_typeProperties_userId')]"
 					},
+					"link_vm_shir_02_ShirName": {
+						"value": "[parameters('link_vm_shir_02_ShirName')]"
+					},
 					"link_vm_shir_02_test_properties_typeProperties_host": {
 						"value": "[parameters('link_vm_shir_02_test_properties_typeProperties_host')]"
 					},
 					"link_vm_shir_02_test_properties_typeProperties_userId": {
 						"value": "[parameters('link_vm_shir_02_test_properties_typeProperties_userId')]"
+					},
+					"link_vm_shir_02_test_ShirName": {
+						"value": "[parameters('link_vm_shir_02_test_ShirName')]"
 					}
 				}
 			},
