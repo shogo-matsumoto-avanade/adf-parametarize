@@ -117,8 +117,15 @@
                     "sasToken": "|",
                     "connectionString": "|:-connectionString:secureString",
                     "hostKeyFingerprint": "=",
-                    "mlWorkspaceName": "=",
-                    "referenceName": "="
+                    "mlWorkspaceName": "="
+                },
+                "parameters": {
+                    "*": {
+                        "defaultValue": "=:Default:string"
+                    }
+                },
+                "connectVia": {
+                    "referenceName": "=:-ShirName:string"
                 }
             }
         },
