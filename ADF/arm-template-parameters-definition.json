@@ -121,7 +121,7 @@
                 },
                 "parameters": {
                     "*": {
-                        "defaultValue": "=:Host:string"
+                        "defaultValue": "=:Default:string"
                     }
                 }
             }
