@@ -55,9 +55,6 @@
                         ]
                     }
                 }
-            },
-            "connectVia":{
-                "*":"="
             }
         }
     },
@@ -126,6 +123,9 @@
                     "*": {
                         "defaultValue": "=:Default:string"
                     }
+                },
+                "connectVia": {
+                    "referenceName": "="
                 }
             }
         },
