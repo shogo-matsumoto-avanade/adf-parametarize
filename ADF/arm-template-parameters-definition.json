@@ -121,7 +121,7 @@
                 },
                 "parameters": {
                     "*": {
-                        "defaultValue": "=:-param:string"
+                        "defaultValue": "="
                     }
                 }
             }
