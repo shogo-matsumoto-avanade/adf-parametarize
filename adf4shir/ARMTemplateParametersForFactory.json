@@ -14,8 +14,14 @@
 		"link_vm_shir_02_test_password": {
 			"value": ""
 		},
+		"FileServer1_password": {
+			"value": ""
+		},
 		"link_adls2verification4shir_properties_typeProperties_url": {
 			"value": "https://adls2verification4shir.dfs.core.windows.net/"
+		},
+		"link_kv_d365_properties_typeProperties_baseUrl": {
+			"value": "https://erp-kv-cnn-jpe-d365-test.vault.azure.net/"
 		},
 		"link_vm4shir_test_properties_typeProperties_host": {
 			"value": "\\\\vm4shir-test\\Shared"
@@ -53,8 +59,14 @@
 		"trigger1_properties_typeProperties_scope": {
 			"value": "/subscriptions/2791ee52-b40d-45d0-8cff-2fa2b85915e5/resourceGroups/SHIR_verification/providers/Microsoft.Storage/storageAccounts/adls2verification4shir"
 		},
-		"link_kv_d365_properties_typeProperties_baseUrl": {
-			"value": "https://erp-kv-cnn-jpe-d365-test.vault.azure.net/"
+		"SHIR-Linked_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/2791ee52-b40d-45d0-8cff-2fa2b85915e5/resourcegroups/ML_Test/providers/Microsoft.DataFactory/factories/adf4agent/integrationruntimes/SelfHosted-IR-for-VirtualMachine"
+		},
+		"FileServer1_properties_typeProperties_host": {
+			"value": "\\\\20.243.246.18\\Shared\\"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"value": "smatsumoto"
 		}
 	}
 }

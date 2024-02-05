@@ -19,9 +19,17 @@
 			"type": "secureString",
 			"metadata": "'link_vm_shir_02_test' の 'password' のセキュリティで保護された文字列"
 		},
+		"FileServer1_password": {
+			"type": "secureString",
+			"metadata": "'FileServer1' の 'password' のセキュリティで保護された文字列"
+		},
 		"link_adls2verification4shir_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://adls2verification4shir.dfs.core.windows.net/"
+		},
+		"link_kv_d365_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://erp-kv-cnn-jpe-d365-test.vault.azure.net/"
 		},
 		"link_vm4shir_test_properties_typeProperties_host": {
 			"type": "string",
@@ -71,9 +79,17 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/2791ee52-b40d-45d0-8cff-2fa2b85915e5/resourceGroups/SHIR_verification/providers/Microsoft.Storage/storageAccounts/adls2verification4shir"
 		},
-		"link_kv_d365_properties_typeProperties_baseUrl": {
+		"SHIR-Linked_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
-			"defaultValue": "https://erp-kv-cnn-jpe-d365-test.vault.azure.net/"
+			"defaultValue": "/subscriptions/2791ee52-b40d-45d0-8cff-2fa2b85915e5/resourcegroups/ML_Test/providers/Microsoft.DataFactory/factories/adf4agent/integrationruntimes/SelfHosted-IR-for-VirtualMachine"
+		},
+		"FileServer1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\20.243.246.18\\Shared\\"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "smatsumoto"
 		},
 		"containerUri": {
 			"type": "string",
@@ -102,6 +118,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"FileServer1_password": {
+						"value": "[parameters('FileServer1_password')]"
+					},
 					"link_vm4shir_test_password": {
 						"value": "[parameters('link_vm4shir_test_password')]"
 					},
@@ -116,6 +135,15 @@
 					},
 					"link_kv_d365_properties_typeProperties_baseUrl": {
 						"value": "[parameters('link_kv_d365_properties_typeProperties_baseUrl')]"
+					},
+					"SHIR-Linked_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('SHIR-Linked_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"FileServer1_properties_typeProperties_host": {
+						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
+					},
+					"FileServer1_properties_typeProperties_userId": {
+						"value": "[parameters('FileServer1_properties_typeProperties_userId')]"
 					},
 					"link_vm4shir_test_properties_typeProperties_host": {
 						"value": "[parameters('link_vm4shir_test_properties_typeProperties_host')]"
