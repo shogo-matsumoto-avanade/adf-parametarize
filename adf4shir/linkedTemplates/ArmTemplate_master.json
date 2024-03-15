@@ -7,6 +7,10 @@
 			"metadata": "データ ファクトリ名",
 			"defaultValue": "adf4shir"
 		},
+		"FileServer1_password": {
+			"type": "secureString",
+			"metadata": "'FileServer1' の 'password' のセキュリティで保護された文字列"
+		},
 		"link_vm4shir_test_password": {
 			"type": "secureString",
 			"metadata": "'link_vm4shir_test' の 'password' のセキュリティで保護された文字列"
@@ -19,9 +23,13 @@
 			"type": "secureString",
 			"metadata": "'link_vm_shir_02_test' の 'password' のセキュリティで保護された文字列"
 		},
-		"FileServer1_password": {
-			"type": "secureString",
-			"metadata": "'FileServer1' の 'password' のセキュリティで保護された文字列"
+		"FileServer1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\20.243.246.18\\Shared\\"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "smatsumoto"
 		},
 		"link_adls2verification4shir_properties_typeProperties_url": {
 			"type": "string",
@@ -83,14 +91,6 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/2791ee52-b40d-45d0-8cff-2fa2b85915e5/resourcegroups/ML_Test/providers/Microsoft.DataFactory/factories/adf4agent/integrationruntimes/SelfHosted-IR-for-VirtualMachine"
 		},
-		"FileServer1_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "\\\\20.243.246.18\\Shared\\"
-		},
-		"FileServer1_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "smatsumoto"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "リンクされた ARM テンプレートを含むストレージ アカウントの URI"
@@ -127,8 +127,11 @@
 					"link_vm_shir_02_password": {
 						"value": "[parameters('link_vm_shir_02_password')]"
 					},
-					"link_vm_shir_02_test_password": {
-						"value": "[parameters('link_vm_shir_02_test_password')]"
+					"FileServer1_properties_typeProperties_host": {
+						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
+					},
+					"FileServer1_properties_typeProperties_userId": {
+						"value": "[parameters('FileServer1_properties_typeProperties_userId')]"
 					},
 					"link_adls2verification4shir_properties_typeProperties_url": {
 						"value": "[parameters('link_adls2verification4shir_properties_typeProperties_url')]"
@@ -138,12 +141,6 @@
 					},
 					"SHIR-Linked_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('SHIR-Linked_properties_typeProperties_linkedInfo_resourceId')]"
-					},
-					"FileServer1_properties_typeProperties_host": {
-						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
-					},
-					"FileServer1_properties_typeProperties_userId": {
-						"value": "[parameters('FileServer1_properties_typeProperties_userId')]"
 					},
 					"link_vm4shir_test_properties_typeProperties_host": {
 						"value": "[parameters('link_vm4shir_test_properties_typeProperties_host')]"
@@ -165,15 +162,6 @@
 					},
 					"link_vm_shir_02_ShirName": {
 						"value": "[parameters('link_vm_shir_02_ShirName')]"
-					},
-					"link_vm_shir_02_test_properties_typeProperties_host": {
-						"value": "[parameters('link_vm_shir_02_test_properties_typeProperties_host')]"
-					},
-					"link_vm_shir_02_test_properties_typeProperties_userId": {
-						"value": "[parameters('link_vm_shir_02_test_properties_typeProperties_userId')]"
-					},
-					"link_vm_shir_02_test_ShirName": {
-						"value": "[parameters('link_vm_shir_02_test_ShirName')]"
 					}
 				}
 			},
@@ -192,6 +180,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"link_vm_shir_02_test_password": {
+						"value": "[parameters('link_vm_shir_02_test_password')]"
+					},
+					"link_vm_shir_02_test_properties_typeProperties_host": {
+						"value": "[parameters('link_vm_shir_02_test_properties_typeProperties_host')]"
+					},
+					"link_vm_shir_02_test_properties_typeProperties_userId": {
+						"value": "[parameters('link_vm_shir_02_test_properties_typeProperties_userId')]"
+					},
+					"link_vm_shir_02_test_ShirName": {
+						"value": "[parameters('link_vm_shir_02_test_ShirName')]"
 					},
 					"FileTrigger_properties_typeProperties_scope": {
 						"value": "[parameters('FileTrigger_properties_typeProperties_scope')]"

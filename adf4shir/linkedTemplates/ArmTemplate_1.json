@@ -7,6 +7,22 @@
 			"metadata": "データ ファクトリ名",
 			"defaultValue": "adf4shir"
 		},
+		"link_vm_shir_02_test_password": {
+			"type": "secureString",
+			"metadata": "'link_vm_shir_02_test' の 'password' のセキュリティで保護された文字列"
+		},
+		"link_vm_shir_02_test_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\vm-shir-01-mk2\\Shared\\ADF"
+		},
+		"link_vm_shir_02_test_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "shogo.matsumoto"
+		},
+		"link_vm_shir_02_test_ShirName": {
+			"type": "string",
+			"defaultValue": "SHIR-01"
+		},
 		"FileTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2791ee52-b40d-45d0-8cff-2fa2b85915e5/resourceGroups/SHIR_verification/providers/Microsoft.Storage/storageAccounts/adls2verification4shir"
@@ -21,66 +37,127 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/LinkedCsv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/link_vm_shir_02_test')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "FileServer1",
-					"type": "LinkedServiceReference"
-				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "FileServer",
 				"typeProperties": {
-					"location": {
-						"type": "FileServerLocation",
-						"fileName": "ADF_Inbound.csv",
-						"folderPath": "ADF/SendFiles"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "#",
-						"type": "String"
-					},
-					{
-						"name": "Title",
-						"type": "String"
-					},
-					{
-						"name": "Details",
-						"type": "String"
+					"host": "[parameters('link_vm_shir_02_test_properties_typeProperties_host')]",
+					"userId": "[parameters('link_vm_shir_02_test_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('link_vm_shir_02_test_password')]"
 					}
-				]
+				},
+				"connectVia": {
+					"referenceName": "[parameters('link_vm_shir_02_test_ShirName')]",
+					"type": "IntegrationRuntimeReference"
+				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/csv_adls_linked')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/trigger2')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "link_adls2verification4shir",
-					"type": "LinkedServiceReference"
-				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "trigger-test",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "outbound"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 15,
+						"startTime": "2023-07-18T08:38:00",
+						"endTime": "2023-07-19T22:38:00",
+						"timeZone": "Tokyo Standard Time"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv-inbound-linked')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "LinkedCsv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "csv_adls_linked",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
 				},
-				"schema": []
+				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -895,7 +972,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/link_vm_shir_02_test')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/csv_localvm')]",
@@ -960,7 +1039,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/csv-inbound-linked')]",
+			"name": "[concat(parameters('factoryName'), '/Out_To_In_pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -981,7 +1060,7 @@
 							"source": {
 								"type": "DelimitedTextSource",
 								"storeSettings": {
-									"type": "FileServerReadSettings",
+									"type": "AzureBlobFSReadSettings",
 									"recursive": true,
 									"enablePartitionDiscovery": false
 								},
@@ -1012,14 +1091,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "LinkedCsv",
+								"referenceName": "csv_in_datalake_outbound",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "csv_adls_linked",
+								"referenceName": "csv_adls_test",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1031,10 +1110,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/LinkedCsv')]",
-				"[concat(variables('factoryId'), '/datasets/csv_adls_linked')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/copy-all-in-folder-pipeline')]",

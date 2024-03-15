@@ -7,6 +7,10 @@
 			"metadata": "データ ファクトリ名",
 			"defaultValue": "adf4shir"
 		},
+		"FileServer1_password": {
+			"type": "secureString",
+			"metadata": "'FileServer1' の 'password' のセキュリティで保護された文字列"
+		},
 		"link_vm4shir_test_password": {
 			"type": "secureString",
 			"metadata": "'link_vm4shir_test' の 'password' のセキュリティで保護された文字列"
@@ -19,9 +23,13 @@
 			"type": "secureString",
 			"metadata": "'link_vm_shir_02_test' の 'password' のセキュリティで保護された文字列"
 		},
-		"FileServer1_password": {
-			"type": "secureString",
-			"metadata": "'FileServer1' の 'password' のセキュリティで保護された文字列"
+		"FileServer1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\20.243.246.18\\Shared\\"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "smatsumoto"
 		},
 		"link_adls2verification4shir_properties_typeProperties_url": {
 			"type": "string",
@@ -82,14 +90,6 @@
 		"SHIR-Linked_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2791ee52-b40d-45d0-8cff-2fa2b85915e5/resourcegroups/ML_Test/providers/Microsoft.DataFactory/factories/adf4agent/integrationruntimes/SelfHosted-IR-for-VirtualMachine"
-		},
-		"FileServer1_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "\\\\20.243.246.18\\Shared\\"
-		},
-		"FileServer1_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "smatsumoto"
 		}
 	},
 	"variables": {
@@ -161,6 +161,83 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Binary_ADLS_Table001')]",
 				"[concat(variables('factoryId'), '/datasets/Binary_VM_Addin')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv-inbound-linked')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "LinkedCsv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "csv_adls_linked",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/LinkedCsv')]",
+				"[concat(variables('factoryId'), '/datasets/csv_adls_linked')]"
 			]
 		},
 		{
@@ -1216,6 +1293,47 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LinkedCsv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FileServer1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "ADF_Inbound.csv",
+						"folderPath": "ADF/SendFiles"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "#",
+						"type": "String"
+					},
+					{
+						"name": "Title",
+						"type": "String"
+					},
+					{
+						"name": "Details",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FileServer1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/container_test2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1230,6 +1348,33 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileSystem": "test2"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/link_adls2verification4shir')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_adls_linked')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "link_adls2verification4shir",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "outbound"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -1474,6 +1619,24 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/FileServer1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FileServer1_properties_typeProperties_host')]",
+					"userId": "[parameters('FileServer1_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FileServer1_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/link_adls2verification4shir')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -1690,6 +1853,21 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SHIR-Linked')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('SHIR-Linked_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SHIR-vm4logicapp')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -1710,40 +1888,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SHIR-Linked')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {
-					"linkedInfo": {
-						"resourceId": "[parameters('SHIR-Linked_properties_typeProperties_linkedInfo_resourceId')]",
-						"authorizationType": "Rbac"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FileServer1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('FileServer1_properties_typeProperties_host')]",
-					"userId": "[parameters('FileServer1_properties_typeProperties_userId')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('FileServer1_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/csv-inbound-linked')]",
+			"name": "[concat(parameters('factoryName'), '/Out_To_In_pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1764,7 +1909,7 @@
 							"source": {
 								"type": "DelimitedTextSource",
 								"storeSettings": {
-									"type": "FileServerReadSettings",
+									"type": "AzureBlobFSReadSettings",
 									"recursive": true,
 									"enablePartitionDiscovery": false
 								},
@@ -1795,14 +1940,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "LinkedCsv",
+								"referenceName": "csv_in_datalake_outbound",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "csv_adls_linked",
+								"referenceName": "csv_adls_test",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1815,76 +1960,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/LinkedCsv')]",
-				"[concat(variables('factoryId'), '/datasets/csv_adls_linked')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LinkedCsv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "FileServer1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "FileServerLocation",
-						"fileName": "ADF_Inbound.csv",
-						"folderPath": "ADF/SendFiles"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "#",
-						"type": "String"
-					},
-					{
-						"name": "Title",
-						"type": "String"
-					},
-					{
-						"name": "Details",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/FileServer1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/csv_adls_linked')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "link_adls2verification4shir",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "outbound"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/link_adls2verification4shir')]"
+				"[concat(variables('factoryId'), '/datasets/csv_in_datalake_outbound')]",
+				"[concat(variables('factoryId'), '/datasets/csv_adls_test')]"
 			]
 		}
 	]
